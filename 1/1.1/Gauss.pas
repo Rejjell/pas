@@ -1,5 +1,6 @@
 Type TMatrix = array[1..3,1..3] of real; 
 Type TVector = array[1..3] of real; 
+
 Type 
 TLineEquation=class( Object ) 
 Private 
