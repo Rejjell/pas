@@ -5,7 +5,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, TeEngine, Series, ExtCtrls, TeeProcs, Chart, StdCtrls, RK_Method;
 
-  function calcQ(V:Real; h:Real):Double;
+  function calcRo(h:Real):Double;
 
 type
   TForm1 = class(TForm)
@@ -22,48 +22,48 @@ type
 var
   Form1: TForm1;
   L: TLabel;
+      
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 const
-  m = 1000;
-  Cx=2;
-  Cy=0.6;
-  Sm=5;
-
-  V0=5000;
-  q0=-25;
-  h0=100000;
-  L0=0;
-  R=6371000;
-  g=9.81;
-
+  P =1000;
+  A=200;
+  D=0.1;
+  mc=20;
+  G=9.81;
 
 implementation
 {$R *.dfm}
 
 //Задаем функции (правые части уравнений)
 
-function calcQ(V:Real; h: Real):Double;
-var
-  p : Real;
+function calcRo(h:Real):Double;
 begin
-  p := h/100000;
-  Result := p*V*V/200;
+  Result := 0.00132*exp(-1.44345/10000*h);
 end;
 
 procedure Syst (var t: TFloat; var X: TFloatVector;
                 var RP: TFloatVector);
 var
-  q,V,h, phi,L : Real;
+  V,phi,_x,_y,m : Real;
 begin
   V := X[0];
   phi := X[1];
-  h := X[2];
-  L := X[3];
-  q := calcQ(V,h);
-  RP[0] := -Cx*q*Sm/m-g*cos(phi);     //means dx0/dt = 2t
-  RP[1] := Cy*q*Sm/m/V - (q/V - V/(R+h))*cos(phi);  //means dx1/dt = 3x0
-  RP[2] := V*sin(phi);
-  RP[3] := R/(R+h)*V*cos(phi);
+  _x := X[2];
+  _y := X[3];
+  m := X[4];
+
+  RP[0] := P/m-D*V*V/m-G/m*sin(phi)+A/m*sin(phi);     //means dx0/dt = 2t
+  RP[1] := -G/m/V*cos(phi) + A/m/V*cos(phi);  //means dx1/dt = 3x0
+  RP[2] := V*cos(phi);
+  RP[3] := V*sin(phi);
+  RP[4] := -mc;
 end;
 
 procedure TForm1.print(str:string);
@@ -80,31 +80,31 @@ var
     First, Last: TFloat; 
     StepsFact: Cardinal;     
     Count: Word;
-    st : Integer;
+    St:Integer;
 begin
   Memo1 := TMemo.Create(Self);
   Memo1.Parent := Self;
   Memo1.Top := 50;
   Memo1.Left := 50;
-  Memo1.Width := 700;
+  Memo1.Width := 1300;
+  Memo1.Height := 700;
   Memo1.Show();
 
   Memo1.Clear;
-
+  St:=20;
   First := 0.0;
-  //st := 137;
-  st:=10;
-  Last  := st;
-  Count:= 4;
-  Points:=st+1; //11 points for output
+  Last  := St;//137.0;
+  Count:= 5;
+  Points:=St+1; //11 points for output
   StepsFact:=1000000; //all steps inside function = 10*StepsFact
   StepsFact:=10000;
   try
   SetLength(InitConds, Count);
-    InitConds[0]:=5000.0;  //x0(0)=0
-    InitConds[1]:=-25.0*pi/180;  //x1(0)=0
-    InitConds[2]:=100000.0;
+    InitConds[0]:=300.0;  //x0(0)=0
+    InitConds[1]:=30.0*pi/180;  //x1(0)=0
+    InitConds[2]:=0.0;
     InitConds[3]:=0.0;
+    InitConds[4]:=1130.0;
     SetLength(tOut, Points);
     SetLength(XOuts, Count, Points);
   except
@@ -119,13 +119,14 @@ begin
   Memo1.Lines.Add('Run time, ms = ' + IntToStr(t2-t1));
   Memo1.Lines.Add('');
   if I = 0 then
-  for I := Points-11 to Points - 1 do
+  for I := 0 to Points  do
       Memo1.Lines.Add(
                  't = '+ FloatToStr(TOut[I])+
-      '           V = '+ FloatToStr(XOuts[0, I])+
-      '           phi = '+ FloatToStr(XOuts[1, I])+
-      '           h = '+ FloatToStr(XOuts[2, I])+
-      '           L = '+ FloatToStr(XOuts[3, I])
+      '           V = '+ FloatToStrf(XOuts[0, I],ffFixed,6,3)+
+      '           phi = '+ FloatToStrf(XOuts[1, I],ffFixed,6,3)+
+      '           x = '+ FloatToStrf(XOuts[2, I],ffFixed,6,3)+
+      '           y = '+ FloatToStrf(XOuts[3, I],ffFixed,6,3)+
+      '           m = '+ FloatToStrf(XOuts[4, I],ffFixed,6,3)
       );
   //Clean memory:
   XOuts := Nil; tOut := Nil; InitConds := Nil;
