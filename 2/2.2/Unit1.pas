@@ -22,15 +22,6 @@ type
 var
   Form1: TForm1;
   L: TLabel;
-      
- 
- 
- 
- 
- 
- 
- 
-
 const
   P =1000;
   A=200;
@@ -41,7 +32,7 @@ const
 implementation
 {$R *.dfm}
 
-//Задаем функции (правые части уравнений)
+//Г‡Г Г¤Г ГҐГ¬ ГґГіГ­ГЄГ¶ГЁГЁ (ГЇГ°Г ГўГ»ГҐ Г·Г Г±ГІГЁ ГіГ°Г ГўГ­ГҐГ­ГЁГ©)
 
 function calcRo(h:Real):Double;
 begin
