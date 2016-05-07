@@ -11,12 +11,10 @@ FDecision : TVector;
  Protected 
  Function	GetDimension : integer; virtual; 
  begin 
- 
 
  end; 
  Procedure	SetDimension( aDimension : integer ); virtual; 
  begin 
- 
 
  end; 
  Public 
@@ -35,7 +33,6 @@ FDecision : TVector;
  end; 
  Destructor	Destroy;  
  begin 
- 
 
  end; 
  Procedure	Run; virtual; 
@@ -76,19 +73,15 @@ FDecision : TVector;
    end; 
    FDecision[i] := FVector[i] - tmp; 
  end; 
- 
 
  end; 
- 
 
  Procedure	SaveToFile( const aFileName : string ); virtual; 
  begin 
- 
 
  end; 
  Procedure	LoadFromFile( const aFileName : string ); virtual; 
  begin 
- 
 
  end; 
  Property 	Matrix   : TMatrix read FMatrix; 
