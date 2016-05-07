@@ -40,7 +40,7 @@ const
 implementation
 {$R *.dfm}
 
-//Задаем функции (правые части уравнений)
+//Г‡Г Г¤Г ГҐГ¬ ГґГіГ­ГЄГ¶ГЁГЁ (ГЇГ°Г ГўГ»ГҐ Г·Г Г±ГІГЁ ГіГ°Г ГўГ­ГҐГ­ГЁГ©)
 
 function calcQ(V:Real; h: Real):Double;
 var
@@ -92,8 +92,8 @@ begin
   Memo1.Clear;
 
   First := 0.0;
-  //st := 137;
-  st:=10;
+  st := 137;
+  //st:=10;
   Last  := st;
   Count:= 4;
   Points:=st+1; //11 points for output
