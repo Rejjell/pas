@@ -13,7 +13,6 @@ type
     { Private declarations }
   public
     { Public declarations }
-  //procedure FormShow(Sender: TObject);
   procedure FormCreate();
 
   end;
@@ -32,7 +31,6 @@ implementation
 procedure TForm4.FormCreate();
 begin
   Self.Caption := 'Create';
-
 
   Button1 := TButton.Create(Self);
   Button1.Parent := Self;
