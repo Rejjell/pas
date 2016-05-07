@@ -57,7 +57,7 @@ end;
 
 function TForm1.func(x:Real):Real;
 begin
-  Result := x-3;//x*x-9*x+24;
+  Result := x-3;
 end;
 
 end.
